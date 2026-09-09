@@ -12,5 +12,3 @@ class Job:
 
 
   
-job = Job("backup-config", "cp config.json backup/config.json")
-print(job)

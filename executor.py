@@ -11,10 +11,14 @@ class Executor:
 
         todo_job.status = JobStatus.RUNNING
 
-        result =subprocess.run(todo_job.job_command.split(), capture_output=True, text=True)
-        if result.returncode == 0:
-            todo_job.status=JobStatus.SUCCESS
-        else :
-            todo_job.status = JobStatus.FAILED
+        try:
 
+            result =subprocess.run(todo_job.job_command.split(), capture_output=True, text=True)
+            if result.returncode == 0:
+                todo_job.status=JobStatus.SUCCESS
+            else:
+                todo_job.status=JobStatus.FAILED
+        except FileNotFoundError:
+            todo_job.status = JobStatus.FAILED
+            
         return todo_job.status
