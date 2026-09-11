@@ -12,7 +12,7 @@ class Executor:
 
         try:
 
-            result =subprocess.run(todo_job.job_command.split(), capture_output=True, text=True)
+            result =subprocess.run(todo_job.job_command.split(), capture_output=True, text=True, timeout=todo_job.timeout)
 
             return_code = result.returncode
             stdout = result.stdout
@@ -27,6 +27,11 @@ class Executor:
             return_code = None
             stdout = None
             stderr = None
+        except subprocess.TimeoutExpired:
+            todo_job.status = JobStatus.FAILED
+            return_code = None
+            stdout = None
+            stderr = None
 
         my_result = JobResult(
 
@@ -35,8 +40,6 @@ class Executor:
         return_code = return_code,
         stdout = stdout,
         stderr = stderr
-
         )
         
-
         return my_result

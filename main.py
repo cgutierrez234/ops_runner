@@ -7,12 +7,14 @@ if __name__ == "__main__":
     job = Job("succeeding-job", "true")
     job2 = Job("failing-job", "false")
     job3 = Job("really-failing-job", "this_is_bogus")
+    job4 = Job("timeout_job", "sleep 10", timeout=2)
 
     job_queue = JobQueue()
 
     job_queue.add_job(job)
     job_queue.add_job(job2)
     job_queue.add_job(job3)
+    job_queue.add_job(job4)
     
 
     my_exec = Executor()
