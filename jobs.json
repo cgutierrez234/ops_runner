@@ -1,0 +1,24 @@
+[
+    {
+        "job_name": "succeeding-job",
+        "job_command": "true",
+        "timeout": null
+    },
+    {
+        "job_name": "failing-job",
+        "job_command": "false",
+        "timeout": null
+    },
+    {
+        "job_name": "really-failing-job",
+        "job_command": "this_is_bogus",
+        "timeout": null
+    },
+    {
+        "job_name": "timeout_job",
+        "job_command": "sleep 10",
+        "timeout": 2
+    }
+]
+
+
