@@ -1,6 +1,8 @@
 from job import Job
 from executor import Executor
 from job_queue import JobQueue
+from pathlib import Path
+from cleanup import find_cleanup_candidates, reporter
 
 import json
 import sys
@@ -50,6 +52,15 @@ if __name__ == "__main__":
         job_to_do = job_queue.pop_job()
         my_result = my_exec.run_job(job_to_do)
         print(my_result)
-       
+
+    home = Path.home()
+    downloads = home / "Downloads"
+
+    files_to_delete = find_cleanup_candidates(downloads, 30)
+
+    my_report = reporter(files_to_delete)
+
+    for file, age in my_report.items():
+        print(f"File '{file}' is {age} days old")
 
    
