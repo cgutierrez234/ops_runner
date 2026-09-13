@@ -2,7 +2,7 @@ from job import Job
 from executor import Executor
 from job_queue import JobQueue
 from pathlib import Path
-from cleanup import find_cleanup_candidates, reporter
+from cleanup import find_cleanup_candidates, reporter, delete_selected_file
 
 import json
 import sys
@@ -55,6 +55,7 @@ if __name__ == "__main__":
 
     home = Path.home()
     downloads = home / "Downloads"
+    test_path = home / "Downloads" / "TestFile.txt"
 
     files_to_delete = find_cleanup_candidates(downloads, 30)
 
@@ -63,4 +64,6 @@ if __name__ == "__main__":
     for file, age in my_report.items():
         print(f"File '{file}' is {age} days old")
 
-   
+    
+
+    delete_selected_file(test_path)
