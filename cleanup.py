@@ -46,6 +46,26 @@ def delete_selected_file(file: Path):
         if confirm_delete_again.lower() == 'y':
             print(f"Deleting {file} . . . ")
             file.unlink()
+
+def delete_all_files(files: list[Path]):
+
+    for file in files:
+        print(f"File: {file}")
+
+    confirm_delete_all = input("Are you sure you want to delete the above files? ")
+
+    valid_responses = ['y', 'n']
+
+    while confirm_delete_all.lower() not in valid_responses:
+        confirm_delete_all = input("Invalid response. Enter y or n: ")
+
+    if confirm_delete_all.lower() == 'y':
+        confirm_delete_all_again = input(f"ARE YOU ABSOLUTELY SURE YOU WANT TO DELETE ALL FILES?!?!?!?!?!")
+        if confirm_delete_all_again.lower() == 'y':
+            print(f"Deleting all files . . .")
+            for file in files:
+                file.unlink()
+
         
 
 

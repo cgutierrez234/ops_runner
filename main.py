@@ -2,7 +2,7 @@ from job import Job
 from executor import Executor
 from job_queue import JobQueue
 from pathlib import Path
-from cleanup import find_cleanup_candidates, reporter, delete_selected_file
+from cleanup import find_cleanup_candidates, reporter, delete_selected_file, delete_all_files
 
 import json
 import sys
@@ -66,4 +66,4 @@ if __name__ == "__main__":
 
     
 
-    delete_selected_file(test_path)
+    delete_all_files(files_to_delete)
