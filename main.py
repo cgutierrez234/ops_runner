@@ -1,50 +1,22 @@
-from job import Job
 from executor import Executor
 from job_queue import JobQueue
 from pathlib import Path
-from cleanup import find_cleanup_candidates, reporter, delete_selected_file, delete_all_files
-
-import json
-import sys
+from cleanup import run_cleanup
+from job_loader import load_jobs
 
 if __name__ == "__main__":
+    # Set home directory
+    home = Path.home()
 
-
+# Load the jobs from the JSON config. This gives the program its spine
+    json_to_load = home / "Desktop" / "ops_runner"/ "jobs.json"
+    jobs = load_jobs(json_to_load)
+    
     job_queue = JobQueue()
 
-    try:
-
-        with open("jobs.json", "r") as file:
-            jobs =  json.load(file)
-            
-    except FileNotFoundError:
-        print("jobs.json not found")
-        sys.exit(1) # <--- end the python program right now.
-
-    except json.JSONDecodeError:
-        print("jobs.json config file is malformed.")
-        sys.exit(1)
-
     for job in jobs:
-        try:
-            name = job["job_name"]
-            if not isinstance(name, str):
-                print(f"Job '{name}' has an invalid name: {name!r}")
-                continue
-            command = job["job_command"]
-            if not isinstance(command, str):
-                print(f"Job '{name}' has an invalid command: {command!r}")
-                continue
-            timeout = job.get("timeout")
-            if not isinstance(timeout, int) and timeout is not None:
-                print(f"Job '{name}' has an invalid timeout: {timeout!r}")
-                continue
-        except KeyError as error:
-                print(error)
-                continue
-        
-        new_job = Job(name, command, timeout)
-        job_queue.add_job(new_job)
+
+        job_queue.add_job(job)
     
     my_exec = Executor()
 
@@ -53,17 +25,12 @@ if __name__ == "__main__":
         my_result = my_exec.run_job(job_to_do)
         print(my_result)
 
-    home = Path.home()
+# Create a path for cleaning up a certain directory
+    
     downloads = home / "Downloads"
-    test_path = home / "Downloads" / "TestFile.txt"
-
-    files_to_delete = find_cleanup_candidates(downloads, 30)
-
-    my_report = reporter(files_to_delete)
-
-    for file, age in my_report.items():
-        print(f"File '{file}' is {age} days old")
+    run_cleanup(downloads,30)
 
     
 
-    delete_all_files(files_to_delete)
+    
+    

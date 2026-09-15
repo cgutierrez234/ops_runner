@@ -66,6 +66,16 @@ def delete_all_files(files: list[Path]):
             for file in files:
                 file.unlink()
 
+def run_cleanup(file_path: Path, days: int):
+
+    files_to_delete = find_cleanup_candidates(file_path, days)
+    
+    my_report = reporter(files_to_delete)
+    
+    for file, age in my_report.items():
+        print(f"File '{file}' is {age} days old")
+
+    delete_all_files(files_to_delete)
         
 
 
