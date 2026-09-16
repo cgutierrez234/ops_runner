@@ -1,7 +1,9 @@
 import json
 import sys
+
 from job import Job
 from pathlib import Path
+from cleanup_config import CleanupConfig
 
 
 
@@ -40,3 +42,39 @@ def load_jobs(file_name: Path) -> list[Job]:
         loaded_jobs.append(new_job)
 
     return loaded_jobs
+
+def load_cleanup_configs(file_name: Path) -> list[CleanupConfig]:
+
+    loaded_configs = []
+
+    try:
+        with open(file_name, "r") as file:
+            configs = json.load(file)
+    except FileNotFoundError:
+        print("cleanup.json not found")
+        sys.exit(1)
+    except json.JSONDecodeError:
+            print("cleanup.json config file is malformed.")
+            sys.exit(1)
+
+    for config in configs:
+
+        try:
+            directory = Path(config["directory"]).expanduser() # < ---- this expands something like ~/Downalods into a full path
+            if not directory.exists():
+                print(f"Cleanup directory {directory} does not exist.")
+                continue
+            days = config["days"]
+            if not isinstance(days, int):
+                print(f"Days variable is not of type int")
+                continue
+        except KeyError as error:
+            print(error)
+            continue
+        new_config = CleanupConfig(directory, days)
+        loaded_configs.append(new_config)
+
+    return loaded_configs
+
+
+            
