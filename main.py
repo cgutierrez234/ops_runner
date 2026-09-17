@@ -6,7 +6,6 @@ from cleanup import run_cleanup
 from loader import load_jobs, load_cleanup_configs
 
 if __name__ == "__main__":
-    
     # Set home directory
     home = Path.home()
 
@@ -31,9 +30,36 @@ if __name__ == "__main__":
         my_result = my_exec.run_job(job_to_do)
         print(my_result)
 
-# iterate loaded cleanup_configs
-    for cleanup in cleanup_configs:
-        run_cleanup(cleanup)
+# iterate loaded cleanup_configs and create a nice little cutesy menu
+for index, config in enumerate(cleanup_configs):
+    print(f"{index + 1}. {config}")
+
+while True: 
+
+    user_choice = input("Please select your cleanup option(a numeric option you've been provided): ")
+
+    try:
+        user_choice = int(user_choice)
+        if user_choice < 1 or user_choice > len(cleanup_configs):
+            print(f"Your selection needs to to be from the list of options")
+            continue
+        else:
+            break
+    except ValueError:
+        # print(f"{user_choice} is an invalid type. Please re-enter.")
+        continue
+
+user_choice = user_choice - 1
+config_to_run = cleanup_configs[user_choice]
+run_cleanup(config_to_run)
+
+    
+
+
+
+
+
+
 
     
 
