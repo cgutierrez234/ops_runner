@@ -1,9 +1,9 @@
 from executor import Executor
 from job_queue import JobQueue
 from pathlib import Path
-from cleanup_config import CleanupConfig
 from cleanup import run_cleanup
 from loader import load_jobs, load_cleanup_configs
+from cli import select_cleanup_config
 
 if __name__ == "__main__":
     # Set home directory
@@ -30,27 +30,8 @@ if __name__ == "__main__":
         my_result = my_exec.run_job(job_to_do)
         print(my_result)
 
-# iterate loaded cleanup_configs and create a nice little cutesy menu
-for index, config in enumerate(cleanup_configs):
-    print(f"{index + 1}. {config}")
 
-while True: 
-
-    user_choice = input("Please select your cleanup option(a numeric option you've been provided): ")
-
-    try:
-        user_choice = int(user_choice)
-        if user_choice < 1 or user_choice > len(cleanup_configs):
-            print(f"Your selection needs to to be from the list of options")
-            continue
-        else:
-            break
-    except ValueError:
-        # print(f"{user_choice} is an invalid type. Please re-enter.")
-        continue
-
-user_choice = user_choice - 1
-config_to_run = cleanup_configs[user_choice]
+config_to_run = select_cleanup_config(cleanup_configs)
 run_cleanup(config_to_run)
 
     
