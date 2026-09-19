@@ -36,7 +36,11 @@ if __name__ == "__main__":
                     my_result = my_exec.run_job(job_to_do)
                     print(my_result)
             case 2:
-                continue
+
+                clear_screen()
+                config_to_run = select_cleanup_config(cleanup_configs)
+                run_cleanup(config_to_run)
+
             case 3:
                 break
             
@@ -46,8 +50,8 @@ if __name__ == "__main__":
 
 
 
-# config_to_run = select_cleanup_config(cleanup_configs)
-# run_cleanup(config_to_run)
+
+ 
 
     
 

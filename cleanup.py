@@ -1,6 +1,7 @@
 from pathlib import Path
 from cleanup_config import CleanupConfig
 from datetime import datetime, timedelta
+from cli import clear_screen
 
 def find_cleanup_candidates(directory: Path, days: int) -> list[Path]:
 
@@ -66,6 +67,12 @@ def delete_all_files(files: list[Path]):
             print(f"Deleting all files . . .")
             for file in files:
                 file.unlink()
+        else: 
+            clear_screen()
+            return
+    else:
+        clear_screen()
+        return
 
 def run_cleanup(config: CleanupConfig):
 
