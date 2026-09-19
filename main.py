@@ -3,7 +3,7 @@ from job_queue import JobQueue
 from pathlib import Path
 from cleanup import run_cleanup
 from loader import load_jobs, load_cleanup_configs
-from cli import  clear_screen, display_main_menu,  select_cleanup_config, select_job
+from cli import  clear_screen, display_main_menu,  select_cleanup_config, select_job, choose_cleanup_mode
 
 if __name__ == "__main__":
     # Set home directory
@@ -38,10 +38,15 @@ if __name__ == "__main__":
             case 2:
 
                 clear_screen()
+                selected_mode = choose_cleanup_mode()
+                clear_screen()
                 config_to_run = select_cleanup_config(cleanup_configs)
-                run_cleanup(config_to_run)
+                clear_screen()
+
+                run_cleanup(config_to_run, selected_mode)
 
             case 3:
+                clear_screen()
                 break
             
 

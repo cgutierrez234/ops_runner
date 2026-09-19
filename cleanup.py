@@ -74,16 +74,22 @@ def delete_all_files(files: list[Path]):
         clear_screen()
         return
 
-def run_cleanup(config: CleanupConfig):
+def run_cleanup(config: CleanupConfig, mode: int):
 
     files_to_delete = find_cleanup_candidates(config.directory, config.days)
     
     my_report = reporter(files_to_delete)
-    
-    for file, age in my_report.items():
-        print(f"File '{file}' is {age} days old")
 
-    delete_all_files(files_to_delete)
+    if mode == 1:
+
+
+        for file, age in my_report.items():
+            print(f"File '{file}' is {age} days old")
+        return
+    
+    if mode == 2:
+
+        delete_all_files(files_to_delete)
         
 
 

@@ -3,6 +3,8 @@ from job import Job
 
 import os
 
+
+
 def display_main_menu() -> int:
     menu_options = ["Run Jobs", "Run Cleanup", "Exit"]
     
@@ -16,7 +18,7 @@ def display_main_menu() -> int:
         try:
             startup_choice = int(startup_choice)
             if startup_choice < 1 or startup_choice > len(menu_options):
-                print(f"Your selection needs to to be from the list of options")
+                print("Your selection needs to to be from the list of options")
                 continue
             else:
                 break
@@ -70,6 +72,31 @@ def select_job(jobs: list[Job]) -> Job:
     user_choice = user_choice - 1
 
     return jobs[user_choice]
+
+def choose_cleanup_mode() -> int:
+
+    cleanup_choies = ["Dry Run (no real delete, just display)", "Delete files (no .... seriously)"]
+
+    for index, choice in enumerate(cleanup_choies):
+        print(f"{index + 1}. {choice}")
+
+
+    while True: 
+
+        cleanup_mode_choice = input("Please make your selection: ")
+
+        try:
+            cleanup_mode_choice = int(cleanup_mode_choice)
+            if cleanup_mode_choice < 1 or cleanup_mode_choice > len(cleanup_choies):
+                print("Your selection needs to to be from the list of options")
+                continue
+            else:
+                break
+        except ValueError: 
+            continue
+
+    return cleanup_mode_choice
+
 
 def clear_screen():
     if os.name == "nt":
