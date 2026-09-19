@@ -34,7 +34,7 @@ def reporter(files: list[Path]) -> dict:
 
     return file_age_dict
 
-def delete_selected_file(file: Path):
+def delete_selected_file(file: Path) -> int:
 
     confirm_delete = input(f"Are you sure you want to delete: {file}? ")
 
@@ -48,8 +48,12 @@ def delete_selected_file(file: Path):
         if confirm_delete_again.lower() == 'y':
             print(f"Deleting {file} . . . ")
             file.unlink()
+            return 1 
+    return 0
 
-def delete_all_files(files: list[Path]):
+def delete_all_files(files: list[Path]) -> int:
+
+    deleted_files = 0
 
     for file in files:
         print(f"File: {file}")
@@ -67,14 +71,19 @@ def delete_all_files(files: list[Path]):
             print(f"Deleting all files . . .")
             for file in files:
                 file.unlink()
+                deleted_files += 1
         else: 
             clear_screen()
-            return
+            return 0
     else:
         clear_screen()
-        return
+        return 0
+
+    return deleted_files
 
 def run_cleanup(config: CleanupConfig, mode: int):
+
+    num_deleted_files = 0
 
     files_to_delete = find_cleanup_candidates(config.directory, config.days)
 
@@ -88,11 +97,11 @@ def run_cleanup(config: CleanupConfig, mode: int):
 
         for file, age in my_report.items():
             print(f"File '{file.name}' is {age} days old")
-        return
+        
     
     if mode == 2:
 
-        delete_all_files(files_to_delete)
+        num_deleted_files = delete_all_files(files_to_delete)
 
     if mode == 3:
         for index, file in enumerate(files_to_delete):
@@ -110,9 +119,25 @@ def run_cleanup(config: CleanupConfig, mode: int):
                     break
             except ValueError:
                 continue
-
+        
         user_choice = user_choice - 1
-        delete_selected_file(files_to_delete[user_choice])
+        num_deleted_files = delete_selected_file(files_to_delete[user_choice])
+
+    
+
+    result = {}
+
+    result["Directory"] = config.directory
+    result["Mode"] = mode
+    result["Candidates_to_delete"]= len(files_to_delete)
+    result["Num_Deleted_Files"] = num_deleted_files
+
+    print(result)
+
+    return result
+
+
+        
             
         
    

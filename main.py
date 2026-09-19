@@ -39,6 +39,10 @@ if __name__ == "__main__":
 
                 clear_screen()
                 selected_mode = choose_cleanup_mode()
+                if selected_mode == 4:
+                    clear_screen()
+                    continue
+
                 clear_screen()
                 config_to_run = select_cleanup_config(cleanup_configs)
                 clear_screen()
