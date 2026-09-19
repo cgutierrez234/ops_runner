@@ -32,7 +32,7 @@ def select_cleanup_config(cleanup_configs: list[CleanupConfig]) ->CleanupConfig:
 
     # iterate loaded cleanup_configs and create a nice little cutesy menu
     for index, config in enumerate(cleanup_configs):
-        print(f"{index + 1}. {config}")
+        print(f"{index + 1}. {config.directory.name} - Files older than {config.days} days")
 
     while True: 
 
@@ -55,7 +55,7 @@ def select_cleanup_config(cleanup_configs: list[CleanupConfig]) ->CleanupConfig:
 def select_job(jobs: list[Job]) -> Job:
 
     for index, job in enumerate(jobs):
-        print(f"{index + 1}. {job}")
+        print(f"{index + 1}. {job.job_name}")
 
     while True: 
         user_choice = input("Please select the Job you want to perform(a numeric option you've been provided)")
@@ -75,7 +75,7 @@ def select_job(jobs: list[Job]) -> Job:
 
 def choose_cleanup_mode() -> int:
 
-    cleanup_choies = ["Dry Run (no real delete, just display)", "Delete files (no .... seriously)"]
+    cleanup_choies = ["Dry Run (no real delete, just display)", "Delete all files", "Delete individual file by name", "Back"]
 
     for index, choice in enumerate(cleanup_choies):
         print(f"{index + 1}. {choice}")

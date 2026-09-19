@@ -77,19 +77,45 @@ def delete_all_files(files: list[Path]):
 def run_cleanup(config: CleanupConfig, mode: int):
 
     files_to_delete = find_cleanup_candidates(config.directory, config.days)
+
+    if not files_to_delete:
+            print("There are no files for cleanup")
+            return
     
     my_report = reporter(files_to_delete)
 
     if mode == 1:
 
-
         for file, age in my_report.items():
-            print(f"File '{file}' is {age} days old")
+            print(f"File '{file.name}' is {age} days old")
         return
     
     if mode == 2:
 
         delete_all_files(files_to_delete)
+
+    if mode == 3:
+        for index, file in enumerate(files_to_delete):
+            print(f"{index + 1}. {file.name}")
+
+        while True: 
+            user_choice = input("Please select the file you want to delete(a numeric option you've been provided)")
+    
+            try:
+                user_choice = int(user_choice)
+                if user_choice < 1 or user_choice > len(files_to_delete):
+                    print(f"Your selection needs to to be from the list of options")
+                    continue
+                else:
+                    break
+            except ValueError:
+                continue
+
+        user_choice = user_choice - 1
+        delete_selected_file(files_to_delete[user_choice])
+            
+        
+   
         
 
 

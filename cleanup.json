@@ -1,11 +1,11 @@
 [
     {
         "directory": "~/Downloads",
-        "days": 30
+        "days": 0
     },
     {
         "directory": "~/Desktop",
-        "days": 60
+        "days": 0
     }
 
 ]
