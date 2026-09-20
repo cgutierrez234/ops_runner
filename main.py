@@ -1,7 +1,7 @@
 from executor import Executor
 from job_queue import JobQueue
 from pathlib import Path
-from cleanup import run_cleanup
+from cleanup import run_cleanup, write_history_file
 from loader import load_jobs, load_cleanup_configs
 from cli import  clear_screen, display_main_menu,  select_cleanup_config, select_job, choose_cleanup_mode
 
@@ -47,7 +47,8 @@ if __name__ == "__main__":
                 config_to_run = select_cleanup_config(cleanup_configs)
                 clear_screen()
 
-                run_cleanup(config_to_run, selected_mode)
+                result = run_cleanup(config_to_run, selected_mode)
+                write_history_file(result)
 
             case 3:
                 clear_screen()
