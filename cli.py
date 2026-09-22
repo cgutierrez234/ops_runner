@@ -52,25 +52,29 @@ def select_cleanup_config(cleanup_configs: list[CleanupConfig]) ->CleanupConfig:
 
     return cleanup_configs[user_choice]
 
-def select_job(jobs: list[Job]) -> Job:
+def select_job(jobs: list[Job]) -> Job | None:
 
     for index, job in enumerate(jobs):
         print(f"{index + 1}. {job.job_name}")
+
+    print(f"{len(jobs) + 1}. Back")
 
     while True: 
         user_choice = input("Please select the Job you want to perform(a numeric option you've been provided)")
 
         try:
             user_choice = int(user_choice)
-            if user_choice < 1 or user_choice > len(jobs):
+            if user_choice < 1 or user_choice > len(jobs) + 1:
                 print(f"Your selection needs to to be from the list of options")
                 continue
             else:
                 break
         except ValueError:
             continue
+    if user_choice == len(jobs) + 1:
+        return None
+    
     user_choice = user_choice - 1
-
     return jobs[user_choice]
 
 def choose_cleanup_mode() -> int:

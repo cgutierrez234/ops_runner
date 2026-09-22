@@ -25,6 +25,11 @@ if __name__ == "__main__":
 
                 clear_screen()
                 selected_job = select_job(jobs)
+                if selected_job is None:
+                    clear_screen()
+                    continue
+                
+                
 
                 job_queue = JobQueue()
                 job_queue.add_job(selected_job)
