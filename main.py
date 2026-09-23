@@ -1,9 +1,10 @@
 from executor import Executor
 from job_queue import JobQueue
 from pathlib import Path
-from cleanup import run_cleanup, write_history_file
+from cleanup import run_cleanup
 from loader import load_jobs, load_cleanup_configs
 from cli import  clear_screen, display_main_menu,  select_cleanup_config, select_job, choose_cleanup_mode
+from history import job_result_to_dict, write_history_file
 
 if __name__ == "__main__":
     # Set home directory
@@ -29,8 +30,6 @@ if __name__ == "__main__":
                     clear_screen()
                     continue
                 
-                
-
                 job_queue = JobQueue()
                 job_queue.add_job(selected_job)
                 
@@ -39,7 +38,9 @@ if __name__ == "__main__":
                 while job_queue.has_jobs():
                     job_to_do = job_queue.pop_job()
                     my_result = my_exec.run_job(job_to_do)
-                    print(my_result)
+                    my_result_dict = job_result_to_dict(my_result)
+                    write_history_file(my_result_dict, Path("job_history.jsonl"))
+
             case 2:
 
                 clear_screen()
@@ -53,7 +54,7 @@ if __name__ == "__main__":
                 clear_screen()
 
                 result = run_cleanup(config_to_run, selected_mode)
-                write_history_file(result)
+                write_history_file(result, Path("cleanup_history.jsonl"))
 
             case 3:
                 clear_screen()

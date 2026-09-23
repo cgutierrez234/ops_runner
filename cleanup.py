@@ -126,22 +126,16 @@ def run_cleanup(config: CleanupConfig, mode: int):
         num_deleted_files = delete_selected_file(files_to_delete[user_choice])
 
     current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
-    result = {}
-
-    result["Time_Written"] = current_time
-    result["Directory"] = str(config.directory)
-    result["Mode"] = mode
-    result["Candidates_to_delete"]= len(files_to_delete)
-    result["Num_Deleted_Files"] = num_deleted_files
-
-    return result
-
-def write_history_file(result: dict):
-
-
-    with open("cleanup_history", "a") as file:
-        json.dump(result, file, indent=4)
+    
+    cleanup_result = {}
+    
+    cleanup_result["Time_Written"] = current_time
+    cleanup_result["Directory"] = str(config.directory)
+    cleanup_result["Mode"] = mode
+    cleanup_result["Candidates_to_delete"]= len(files_to_delete)
+    cleanup_result["Num_Deleted_Files"] = num_deleted_files
+    
+    return cleanup_result
 
 
         
