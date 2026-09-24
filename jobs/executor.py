@@ -1,6 +1,6 @@
-from job import Job
-from job_status import JobStatus
-from job_result import JobResult
+from jobs.job import Job
+from jobs.job_status import JobStatus
+from jobs.job_result import JobResult
 
 import subprocess
 

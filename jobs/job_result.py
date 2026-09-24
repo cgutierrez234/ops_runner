@@ -1,6 +1,6 @@
 from dataclasses import dataclass
-from job import Job
-from job_status import JobStatus
+from jobs.job import Job
+from jobs.job_status import JobStatus
 
 @dataclass
 class JobResult:

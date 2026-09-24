@@ -1,6 +1,6 @@
 from datetime import datetime
 from pathlib import Path
-from executor import JobResult
+from jobs.executor import JobResult
 import json
 
 

@@ -1,9 +1,9 @@
 import json
 import sys
 
-from job import Job
+from jobs.job import Job
 from pathlib import Path
-from cleanup_config import CleanupConfig
+from cleanup.cleanup_config import CleanupConfig
 
 
 

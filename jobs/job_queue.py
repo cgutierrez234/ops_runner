@@ -1,5 +1,5 @@
 from collections import deque
-from job import Job
+from jobs.job import Job
 
 
 class JobQueue:

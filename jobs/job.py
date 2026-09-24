@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from job_status import JobStatus
+from jobs.job_status import JobStatus
 
 
 @dataclass

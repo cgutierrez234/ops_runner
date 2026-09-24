@@ -1,5 +1,5 @@
-from cleanup_config import CleanupConfig
-from job import Job
+from cleanup.cleanup_config import CleanupConfig
+from jobs.job import Job
 
 import os
 

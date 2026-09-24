@@ -1,5 +1,5 @@
 from pathlib import Path
-from cleanup_config import CleanupConfig
+from cleanup.cleanup_config import CleanupConfig
 from datetime import datetime, timedelta
 from cli import clear_screen
 
