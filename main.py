@@ -3,8 +3,8 @@ from jobs.job_queue import JobQueue
 from pathlib import Path
 from cleanup.cleanup import run_cleanup
 from loader import load_jobs, load_cleanup_configs
-from cli import  clear_screen, display_main_menu,  select_cleanup_config, select_job, choose_cleanup_mode
-from history import job_result_to_dict, write_history_file
+from cli import  clear_screen, display_main_menu,  select_cleanup_config, select_job, choose_cleanup_mode, choose_hist_to_display, display_history
+from history import job_result_to_dict, write_history_file, read_history, filter_recent_history
 
 if __name__ == "__main__":
     # Set home directory
@@ -40,6 +40,7 @@ if __name__ == "__main__":
                     my_result = my_exec.run_job(job_to_do)
                     my_result_dict = job_result_to_dict(my_result)
                     write_history_file(my_result_dict, Path("job_history.jsonl"))
+                clear_screen()
 
             case 2:
 
@@ -57,6 +58,33 @@ if __name__ == "__main__":
                 write_history_file(result, Path("cleanup_history.jsonl"))
 
             case 3:
+
+                clear_screen()
+                selected_hist_choice = choose_hist_to_display()
+                if selected_hist_choice == 3:
+                    clear_screen()
+                    continue
+
+                match selected_hist_choice:
+
+                    case 1:
+                        hist_path = Path("job_history.jsonl")
+                        job_history = read_history(hist_path)
+                        jobs_to_view = filter_recent_history(job_history)
+
+                        for job in jobs_to_view:
+                            display_history(job)
+
+                    case 2:
+
+                        hist_path = Path("cleanup_history.jsonl")
+                        cleanup_history = read_history(hist_path)
+                        jobs_to_view = filter_recent_history(cleanup_history)
+
+                        for job in jobs_to_view:
+                            display_history(job)
+
+            case 4:
                 clear_screen()
                 break
             

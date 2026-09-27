@@ -1,0 +1,4 @@
+{"Time_Written": "2026-09-26 14:47:15", "Job": "Job(job_name='timeout_job', job_command='sleep 10', status=<JobStatus.SUCCESS: 'success'>, timeout=None)", "Status": "JobStatus.SUCCESS", "Return_Code": 0, "Std_out": "", "Std_err": ""}
+{"Time_Written": "2026-09-26 14:48:03", "Job": "Job(job_name='failing-job', job_command='false', status=<JobStatus.FAILED: 'failed'>, timeout=None)", "Status": "JobStatus.FAILED", "Return_Code": 1, "Std_out": "", "Std_err": ""}
+{"Time_Written": "2026-09-26 14:48:07", "Job": "Job(job_name='really-failing-job', job_command='this_is_bogus', status=<JobStatus.FAILED: 'failed'>, timeout=None)", "Status": "JobStatus.FAILED", "Return_Code": null, "Std_out": null, "Std_err": null}
+{"Time_Written": "2026-09-26 14:49:02", "Job": "Job(job_name='timeout_job', job_command='sleep 10', status=<JobStatus.SUCCESS: 'success'>, timeout=None)", "Status": "JobStatus.SUCCESS", "Return_Code": 0, "Std_out": "", "Std_err": ""}

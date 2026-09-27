@@ -2,11 +2,13 @@ from cleanup.cleanup_config import CleanupConfig
 from jobs.job import Job
 
 import os
+import json
 
 
 
 def display_main_menu() -> int:
-    menu_options = ["Run Jobs", "Run Cleanup", "Exit"]
+
+    menu_options = ["Run Jobs", "Run Cleanup", "View History", "Exit"]
     
     for index, option in enumerate(menu_options):
         print(f"{index + 1}. {option}")
@@ -101,6 +103,27 @@ def choose_cleanup_mode() -> int:
 
     return cleanup_mode_choice
 
+def choose_hist_to_display()-> int:
+
+    history_options = ["Job History", "Cleanup History", "Back"]
+
+    for index, option in enumerate(history_options):
+        print(f"{index + 1}. {option}")
+
+    while True:
+        hist_choice = input("Please make your selection: ")
+
+        try:
+            hist_choice = int(hist_choice)
+            if hist_choice < 1 or hist_choice > len(history_options):
+                print("Your selection needs to to be from the list of options")
+                continue
+            else:
+                break
+        except ValueError:
+            continue
+
+    return hist_choice
 
 def clear_screen():
     if os.name == "nt":
@@ -109,4 +132,8 @@ def clear_screen():
         os.system("clear")
         print("\033[3J", end="")
 
+def display_history(record:dict):
+
+    ### TODO change output for the record. It ugly as fuck right now. 
+    print(json.dumps(record, indent=4))
     

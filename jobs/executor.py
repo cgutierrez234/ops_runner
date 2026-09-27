@@ -12,7 +12,7 @@ class Executor:
 
         try:
 
-            result =subprocess.run(todo_job.job_command.split(), capture_output=True, text=True, timeout=todo_job.timeout)
+            result = subprocess.run(todo_job.job_command.split(), capture_output=True, text=True, timeout=todo_job.timeout)
 
             return_code = result.returncode
             stdout = result.stdout
