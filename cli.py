@@ -2,7 +2,6 @@ from cleanup.cleanup_config import CleanupConfig
 from jobs.job import Job
 
 import os
-import json
 
 
 
@@ -134,6 +133,11 @@ def clear_screen():
 
 def display_history(record:dict):
 
-    ### TODO change output for the record. It ugly as fuck right now. 
-    print(json.dumps(record, indent=4))
+    print('-' * 45)
+
+    for key, value in record.items():
+        print(f"{key}: {value}")
+
+    print('-' * 45)
+    
     

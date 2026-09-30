@@ -79,10 +79,10 @@ if __name__ == "__main__":
 
                         hist_path = Path("cleanup_history.jsonl")
                         cleanup_history = read_history(hist_path)
-                        jobs_to_view = filter_recent_history(cleanup_history)
+                        cleanup_to_view = filter_recent_history(cleanup_history)
 
-                        for job in jobs_to_view:
-                            display_history(job)
+                        for cleanup in cleanup_to_view:
+                            display_history(cleanup)
 
             case 4:
                 clear_screen()
