@@ -140,4 +140,16 @@ def display_history(record:dict):
 
     print('-' * 45)
     
+def display_disk_health(disk_metrics: dict):
+
+    print('-' * 45)
+
+    for key, value in disk_metrics.items():
+
+        if key == "Percentage_Used" or key == "Percentage_Available":
+            print(f"{key}: {value}%")
+        else:
+            print(f"{key}: {value:.2f} GB")
     
+    print('-' * 45)    
+

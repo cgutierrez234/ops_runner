@@ -26,6 +26,7 @@ def job_result_to_dict(job_result: JobResult) -> dict:
     job_result_dict["Return_Code"] = job_result.return_code
     job_result_dict["Std_out"] = job_result.stdout
     job_result_dict["Std_err"] = job_result.stderr
+    job_result_dict["Py_Func_Result"] = job_result.py_func_result
 
     return job_result_dict
 

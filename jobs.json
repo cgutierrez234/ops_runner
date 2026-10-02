@@ -18,6 +18,9 @@
         "job_name": "timeout_job",
         "job_command": "sleep 10",
         "timeout": 2  
+    },
+    {
+        "job_name": "disk_health"
     }
 ]
 

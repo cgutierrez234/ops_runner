@@ -3,7 +3,7 @@ from jobs.job_queue import JobQueue
 from pathlib import Path
 from cleanup.cleanup import run_cleanup
 from loader import load_jobs, load_cleanup_configs
-from cli import  clear_screen, display_main_menu,  select_cleanup_config, select_job, choose_cleanup_mode, choose_hist_to_display, display_history
+from cli import clear_screen, display_main_menu,  select_cleanup_config, select_job, choose_cleanup_mode, choose_hist_to_display, display_history, display_disk_health
 from history import job_result_to_dict, write_history_file, read_history, filter_recent_history
 
 if __name__ == "__main__":
@@ -38,9 +38,17 @@ if __name__ == "__main__":
                 while job_queue.has_jobs():
                     job_to_do = job_queue.pop_job()
                     my_result = my_exec.run_job(job_to_do)
+                    clear_screen()
+
+                    if my_result.py_func_result is not None:
+                        display_disk_health(my_result.py_func_result)
+                        
                     my_result_dict = job_result_to_dict(my_result)
                     write_history_file(my_result_dict, Path("job_history.jsonl"))
+                    input("Press Enter to return to the main menu . . . ")
+
                 clear_screen()
+                
 
             case 2:
 

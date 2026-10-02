@@ -4,6 +4,7 @@ import sys
 from jobs.job import Job
 from pathlib import Path
 from cleanup.cleanup_config import CleanupConfig
+from job_registry import job_functions
 
 
 
@@ -26,19 +27,28 @@ def load_jobs(file_name: Path) -> list[Job]:
             if not isinstance(name, str):
                 print(f"Job '{name}' has an invalid name: {name!r}")
                 continue
-            command = job["job_command"]
-            if not isinstance(command, str):
-                print(f"Job '{name}' has an invalid command: {command!r}")
-                continue
-            timeout = job.get("timeout")
-            if not isinstance(timeout, int) and timeout is not None:
-                print(f"Job '{name}' has an invalid timeout: {timeout!r}")
-                continue
+
+            if name in job_functions: # < --- here we check if the json job_name is in job_functions dict that holds python functions. 
+                job_function = job_functions[name] # <---- if it is extract the function into job_function
+                command = None
+                timeout = None
+            else:
+                job_function = None
+                command = job["job_command"]
+
+                if not isinstance(command, str):
+                    print(f"Job '{name}' has an invalid command: {command!r}")
+                    continue
+
+                timeout = job.get("timeout")
+                if not isinstance(timeout, int) and timeout is not None:
+                    print(f"Job '{name}' has an invalid timeout: {timeout!r}")
+                    continue
         except KeyError as error:
                 print(error)
                 continue
         
-        new_job = Job(name, command, timeout)
+        new_job = Job(name, command, job_function, timeout)
         loaded_jobs.append(new_job)
 
     return loaded_jobs
