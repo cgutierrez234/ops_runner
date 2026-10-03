@@ -14,8 +14,7 @@ class Executor:
         try:
             if todo_job.job_function is not None:
 
-                root_path = Path("/") # <---- get disk metrics takes a path
-                py_func_result = todo_job.job_function(root_path) # <---- job_function is registered as 'get_disk_metrics'
+                py_func_result = todo_job.job_function(*todo_job.args)
                 todo_job.status = JobStatus.SUCCESS
                 return_code = None
                 stdout = None
@@ -35,11 +34,11 @@ class Executor:
                     todo_job.status=JobStatus.SUCCESS
                 else:
                     todo_job.status=JobStatus.FAILED
-        except FileNotFoundError:
+        except OSError as error:
             todo_job.status = JobStatus.FAILED
             return_code = None
             stdout = None
-            stderr = None
+            stderr = str(error)
             py_func_result = None
         except subprocess.TimeoutExpired:
             todo_job.status = JobStatus.FAILED

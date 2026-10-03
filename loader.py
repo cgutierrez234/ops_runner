@@ -28,6 +28,8 @@ def load_jobs(file_name: Path) -> list[Job]:
                 print(f"Job '{name}' has an invalid name: {name!r}")
                 continue
 
+            args = tuple(job.get("args", [])) ## args is the key to retrieve, the empty list [] is the default when it is missing. Not all jobs have them in ops runner
+
             if name in job_functions: # < --- here we check if the json job_name is in job_functions dict that holds python functions. 
                 job_function = job_functions[name] # <---- if it is extract the function into job_function
                 command = None
@@ -48,7 +50,7 @@ def load_jobs(file_name: Path) -> list[Job]:
                 print(error)
                 continue
         
-        new_job = Job(name, command, job_function, timeout)
+        new_job = Job(name, command, job_function, args=args, timeout=timeout)
         loaded_jobs.append(new_job)
 
     return loaded_jobs

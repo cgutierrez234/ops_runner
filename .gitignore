@@ -216,3 +216,7 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Local execution history
+job_history.jsonl
+cleanup_history.jsonl

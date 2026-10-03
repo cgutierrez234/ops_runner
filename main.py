@@ -3,8 +3,10 @@ from jobs.job_queue import JobQueue
 from pathlib import Path
 from cleanup.cleanup import run_cleanup
 from loader import load_jobs, load_cleanup_configs
-from cli import clear_screen, display_main_menu,  select_cleanup_config, select_job, choose_cleanup_mode, choose_hist_to_display, display_history, display_disk_health
+from cli import clear_screen, display_main_menu,  select_cleanup_config, select_job, choose_cleanup_mode, choose_hist_to_display, display_history, display_disk_health, display_backup_result, choose_dir_to_backup
 from history import job_result_to_dict, write_history_file, read_history, filter_recent_history
+from backup import directory_discovery
+from jobs.job import JobStatus
 
 if __name__ == "__main__":
     # Set home directory
@@ -26,10 +28,24 @@ if __name__ == "__main__":
 
                 clear_screen()
                 selected_job = select_job(jobs)
+
                 if selected_job is None:
                     clear_screen()
                     continue
-                
+
+                if selected_job.job_name == "backup_dir":
+                    clear_screen()
+                    discovered_directories = directory_discovery()
+                    dir_to_backup = choose_dir_to_backup(discovered_directories)
+                    
+
+                    if dir_to_backup is None:
+                        clear_screen()
+                        continue
+
+                    selected_job.args = (dir_to_backup,)
+
+
                 job_queue = JobQueue()
                 job_queue.add_job(selected_job)
                 
@@ -40,8 +56,16 @@ if __name__ == "__main__":
                     my_result = my_exec.run_job(job_to_do)
                     clear_screen()
 
-                    if my_result.py_func_result is not None:
-                        display_disk_health(my_result.py_func_result)
+                    if my_result.status == JobStatus.FAILED:
+                        print(my_result.stderr or "Job failed without an error message")
+
+                    if my_result.py_func_result is not None:    
+
+                        if my_result.job.job_name == "disk_health":
+                            display_disk_health(my_result.py_func_result)
+
+                        if my_result.job.job_name == "backup_dir":
+                            display_backup_result(my_result.py_func_result)
                         
                     my_result_dict = job_result_to_dict(my_result)
                     write_history_file(my_result_dict, Path("job_history.jsonl"))
@@ -82,6 +106,8 @@ if __name__ == "__main__":
 
                         for job in jobs_to_view:
                             display_history(job)
+                        input("Press Enter to return to the main menu . . . ")
+                        clear_screen()
 
                     case 2:
 

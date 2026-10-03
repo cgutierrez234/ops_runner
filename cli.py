@@ -1,4 +1,5 @@
 from cleanup.cleanup_config import CleanupConfig
+from pathlib import Path
 from jobs.job import Job
 
 import os
@@ -61,7 +62,7 @@ def select_job(jobs: list[Job]) -> Job | None:
     print(f"{len(jobs) + 1}. Back")
 
     while True: 
-        user_choice = input("Please select the Job you want to perform(a numeric option you've been provided)")
+        user_choice = input("Please select the Job you want to perform(a numeric option you've been provided): ")
 
         try:
             user_choice = int(user_choice)
@@ -124,6 +125,33 @@ def choose_hist_to_display()-> int:
 
     return hist_choice
 
+def choose_dir_to_backup(dir_list: list[Path]) -> Path | None:
+
+    for index, option in enumerate(dir_list):
+        print(f"{index + 1}. {option.name}")
+
+    print(f"{len(dir_list) + 1}. Back")
+
+    while True:
+
+        dir_choice = input("Choose the directory you'd like to backup: ")
+
+        try:
+            dir_choice = int(dir_choice)
+            if dir_choice < 1 or dir_choice > len(dir_list) + 1:
+                print("Your selection needs to to be from the list of options")
+                continue
+            else:
+                break
+        except ValueError:
+            continue
+    if dir_choice == len(dir_list) + 1:
+        return None
+
+    dir_choice = dir_choice - 1
+    return dir_list[dir_choice]
+
+    
 def clear_screen():
     if os.name == "nt":
         os.system("cls")
@@ -153,3 +181,5 @@ def display_disk_health(disk_metrics: dict):
     
     print('-' * 45)    
 
+def display_backup_result(dest_dir: str):
+    print(f"The destination for backup is {dest_dir}")

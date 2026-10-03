@@ -20,7 +20,11 @@
         "timeout": 2  
     },
     {
-        "job_name": "disk_health"
+        "job_name": "disk_health",
+        "args": ["/"]
+    },
+    {
+        "job_name": "backup_dir"
     }
 ]
 
