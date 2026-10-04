@@ -183,3 +183,6 @@ def display_disk_health(disk_metrics: dict):
 
 def display_backup_result(dest_dir: str):
     print(f"The destination for backup is {dest_dir}")
+
+def display_largest_file(path_to_largest:Path):
+    print(f"The largest file lives at: {path_to_largest} Size: {path_to_largest.stat().st_size} Bytes")

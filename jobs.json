@@ -25,6 +25,9 @@
     },
     {
         "job_name": "backup_dir"
+    },
+    {
+        "job_name": "largest_file"
     }
 ]
 

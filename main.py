@@ -3,7 +3,7 @@ from jobs.job_queue import JobQueue
 from pathlib import Path
 from cleanup.cleanup import run_cleanup
 from loader import load_jobs, load_cleanup_configs
-from cli import clear_screen, display_main_menu,  select_cleanup_config, select_job, choose_cleanup_mode, choose_hist_to_display, display_history, display_disk_health, display_backup_result, choose_dir_to_backup
+from cli import clear_screen, display_main_menu,  select_cleanup_config, select_job, choose_cleanup_mode, choose_hist_to_display, display_history, display_disk_health, display_backup_result, choose_dir_to_backup, display_largest_file
 from history import job_result_to_dict, write_history_file, read_history, filter_recent_history
 from backup import directory_discovery
 from jobs.job import JobStatus
@@ -33,7 +33,7 @@ if __name__ == "__main__":
                     clear_screen()
                     continue
 
-                if selected_job.job_name == "backup_dir":
+                if selected_job.job_name == "backup_dir" or selected_job.job_name == "largest_file":
                     clear_screen()
                     discovered_directories = directory_discovery()
                     dir_to_backup = choose_dir_to_backup(discovered_directories)
@@ -58,6 +58,9 @@ if __name__ == "__main__":
 
                     if my_result.status == JobStatus.FAILED:
                         print(my_result.stderr or "Job failed without an error message")
+                        
+                    elif my_result.job.job_name == "largest_file" and my_result.py_func_result is None:
+                        print("No files found in the selected directory.")
 
                     if my_result.py_func_result is not None:    
 
@@ -66,6 +69,10 @@ if __name__ == "__main__":
 
                         if my_result.job.job_name == "backup_dir":
                             display_backup_result(my_result.py_func_result)
+
+                        if my_result.job.job_name == "largest_file":
+                            display_largest_file(my_result.py_func_result)
+                            my_result.py_func_result = str(my_result.py_func_result)
                         
                     my_result_dict = job_result_to_dict(my_result)
                     write_history_file(my_result_dict, Path("job_history.jsonl"))
