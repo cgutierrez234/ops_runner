@@ -7,14 +7,51 @@ from cli import clear_screen, display_main_menu,  select_cleanup_config, select_
 from history import job_result_to_dict, write_history_file, read_history, filter_recent_history
 from backup import directory_discovery
 from jobs.job import JobStatus
+from cli_commanding import parse_cli_args
 
 if __name__ == "__main__":
     # Set home directory
     home = Path.home()
 
+    # cli args setup
+    cli_args = parse_cli_args()
+
 # Load the jobs from their JSON config. Happens at intiation of ops-runner. Objects are waiting in memory
     jobs_json_to_load = home / "Desktop" / "ops_runner"/ "jobs.json"
     jobs = load_jobs(jobs_json_to_load)
+
+    requested_job = None
+
+    for job in jobs:
+        if job.job_name == cli_args.job_name:
+            requested_job = job 
+            break
+
+    if requested_job is None:
+        print(f"Unknown job: {cli_args.job_name}")
+        raise SystemExit(1)
+
+    if requested_job.job_name in ("backup_dir", "largest_file") and not requested_job.args:
+        print(f"Job '{requested_job.job_name}' needs a source direcctory in its JSON args")
+        raise SystemExit(1)
+
+    if requested_job.job_name == "largest_file":
+        requested_job.args = (Path(requested_job.args[0]),)
+
+    executor = Executor()
+    result = executor.run_job(requested_job)
+
+    if requested_job.job_name == "largest_file" and result.py_func_result is not None:
+        result.py_func_result = str(result.py_func_result)
+
+    result_record = job_result_to_dict(result)
+    write_history_file(result_record, home / "Desktop" / "ops_runner" / "job_history.jsonl")
+
+    if result.status == JobStatus.FAILED:
+        print(result.stderr or "Job failed without an error message")
+        raise SystemExit(1)
+
+    raise SystemExit(0)
 
     # Load the cleanup_config from its JSON file. Happens at intiation of ops-runner. Objects are waiting in memory
     cleanup_config_to_load = home / "Desktop" / "ops_runner" / "cleanup.json"
@@ -58,7 +95,7 @@ if __name__ == "__main__":
 
                     if my_result.status == JobStatus.FAILED:
                         print(my_result.stderr or "Job failed without an error message")
-                        
+
                     elif my_result.job.job_name == "largest_file" and my_result.py_func_result is None:
                         print("No files found in the selected directory.")
 
