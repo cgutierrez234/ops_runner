@@ -24,7 +24,8 @@
         "args": ["/"]
     },
     {
-        "job_name": "backup_dir"
+        "job_name": "backup_dir",
+        "args": ["/Users/carlgutierrez/Desktop/opsrunner_backup_test"]
     },
     {
         "job_name": "largest_file"
